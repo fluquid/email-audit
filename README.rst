@@ -37,13 +37,19 @@ Features
 Quickstart
 ----------
 
+Generator of detected emails from bytestring html::
+
+    import requests
+    from email_audit import audit_html_bytes
+
+    res = requests.get('http://newfitness.co/')
+    list(audit_html_bytes(res.content, res.headers.get('content-type')))
+    
+    ['newfitnessco@gmail.com']
+
 Generator of found emails from unicode html::
 
     emails = audit_html_unicode(unicode_body)
-
-Generator of detected emails from bytestring html::
-
-    audit_html_bytes(body_bytes, content_type=headers.get('content-type'))
 
 Credits
 -------
