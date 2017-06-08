@@ -42,10 +42,10 @@ Generator of detected emails from bytestring html::
     import requests
     from email_audit import audit_html_bytes
 
-    res = requests.get('http://newfitness.co/')
+    res = requests.get('http://example.co/')
     list(audit_html_bytes(res.content, res.headers.get('content-type')))
     
-    ['newfitnessco@gmail.com']
+    ['example@gmail.com']
 
 Generator of found emails from unicode html::
 
