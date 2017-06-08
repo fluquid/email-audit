@@ -2,7 +2,7 @@
 
 __author__ = 'Johannes Ahlmann'
 __email__ = 'johannes@fluquid.com'
-__version__ = '0.2.0-dev'
+__version__ = '0.2.0'
 
 """
 audit whether spam bots are able to extract your email addresses from your
