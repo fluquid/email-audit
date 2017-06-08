@@ -45,7 +45,8 @@ Generator of detected emails from bytestring html::
     res = requests.get('http://example.co/')
     list(audit_html_bytes(res.content, res.headers.get('content-type')))
     
-    ['example@gmail.com']
+    ['example@gmail.com', 'info [at] example [dot] co',
+     'Jonas.Tullus@президент.рф', '#!$%&'*+-/=?^_`{}|~@example.org']
 
 Generator of found emails from unicode html::
 
