@@ -8,10 +8,6 @@ email audit
 .. image:: https://img.shields.io/pypi/pyversions/email-audit.svg
         :target: https://pypi.python.org/pypi/email-audit
 
-.. image:: https://readthedocs.org/projects/email-audit/badge/?version=latest
-        :target: https://readthedocs.org/projects/email-audit/?badge=latest
-        :alt: Documentation Status
-
 .. image:: https://img.shields.io/travis/fluquid/email-audit.svg
         :target: https://travis-ci.org/fluquid/email-audit
 
@@ -23,26 +19,36 @@ email audit
     :alt: Requirements Status
     :target: https://requires.io/github/fluquid/email-audit/requirements/?branch=master
 
-audit which email addresses can be collected by bots from your sites.
+Audit which email addresses can be collected by bots from your sites.
+
+Bot can harvest emails from websites, and many obfuscation techniques are
+not as effective as they may seem.
+This tool helps you find a good balance between ease-of-use for your users on 
+the one side, and thwarting spam bots on the other.
 
 * Free software: MIT license
-* Documentation: https://email-audit.readthedocs.org.
 * Python versions: 2.7, 3.4+
 
 Features
 --------
 
-FIXME
+* audit / find emails that spam bots can find on your sites
 
 Quickstart
 ----------
 
-FIXME
+Generator of found emails from unicode html::
+
+    emails = audit_html_unicode(unicode_body)
+
+Generator of detected emails from bytestring html::
+
+    audit_html_bytes(body_bytes, content_type=headers.get('content-type'))
 
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `rolando/cookiecutter-pypackage`_ project template.
+This package was created with Cookiecutter_ and the `fluquid/cookiecutter-pypackage`_ project template.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`rolando/cookiecutter-pypackage`: https://github.com/rolando/cookiecutter-pypackage
+.. _`fluquid/cookiecutter-pypackage`: https://github.com/fluquid/cookiecutter-pypackage
