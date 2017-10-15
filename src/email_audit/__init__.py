@@ -60,6 +60,7 @@ AT_DOT_RE = re.compile(
     flags=re.UNICODE | re.VERBOSE | re.I)
 
 X_A_HREF = etree.XPath('//a[@href]')
+CF_EMAIL = etree.XPath('//*[@data-cfemail]')
 
 # taken directly from cloudflare enabled sites and wrapped as a function
 # TODO: with minimal DOM simulation, could use script as is...
@@ -95,6 +96,11 @@ def audit_etree(tree):
     look for email addresses in html DOM as well as text generated from DOM
     """
     # FIXME: pre-compile xpath queries
+    for tag in CF_EMAIL(tree):
+        cfemail = tag.get('data-cfemail')
+        if cfemail:
+            yield unquote(cflare(cfemail))
+
     for a_tag in X_A_HREF(tree):
         href = a_tag.get('href')
         unesc = HTML_PARSER.unescape(unquote(href))

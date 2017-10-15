@@ -10,6 +10,19 @@ def split_text(text):
     return [x for x in text.split('\n') if x.strip()]
 
 
+def test_cfemail():
+    MAILTO = """
+<a href="/cdn-cgi/l/email-protection#e48d8a828ba496819091968ac98b8ac98d8a978d838c90ca878b89"><span class="__cf_email__" data-cfemail="cfa6a1a9a08fbdaabbbabda1e2a0a1e2a6a1bca6a8a7bbe1aca0a2">[email&#160;protected]</span></a>
+<a href="/cdn-cgi/l/email-protection#761f1810193602121711041903065815191b"><span class="__cf_email__" data-cfemail="a2cbccc4cde2d6c6c3c5d0cdd7d28cc1cdcf">[email&#160;protected]</span></a>
+<a href="/cdn-cgi/l/email-protection#7b131e1717143b081e091e151f120b120f024955181416"><span class="__cf_email__" data-cfemail="a5cdc0c9c9cae5d6c0d7c0cbc1ccd5ccd1dc978bc6cac8">[email&#160;protected]</span></a>
+<a class='underline' href="/cdn-cgi/l/email-protection#452c2b232a052824372e2031373c2c2b266b262a28"><span class="__cf_email__" data-cfemail="a3cacdc5cce3cec2d1c8c6d7d1dacacdc08dc0ccce">[email&#160;protected]</span></a>
+    """
+    for sample in split_text(MAILTO):
+        tree = parse_html(sample)
+        res = list(set(audit_etree(tree)))
+        assert len(res) == 1 and '@' in res[0], (sample, res)
+
+
 def test_etree_mailto():
     MAILTO = """
 <a href="mailto:foo@bar.baz">
@@ -68,6 +81,7 @@ foo AT bar DOT baz
 jt.superuser[AT]gmail[DOT]com
 contact(at)company(dot)com
     """
+# info(at)embeemobile.com
 
     INVALID = """
 he arrived at the dot exactly.
@@ -120,5 +134,5 @@ def test_cloudflare():
     data-cfemail="5c32392b3a352832392f2f3f331c3b313d3530723f3331">
     """
     TARGET = "newfitnessco@gmail.com"
-    res = list(audit_html_unicode(CF_DATA))
+    res = list(set(audit_html_unicode(CF_DATA)))
     assert len(res) == 1 and TARGET == res[0], res
