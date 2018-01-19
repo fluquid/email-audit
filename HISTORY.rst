@@ -4,6 +4,10 @@ History
 
 .. comment:: bumpversion marker
 
+0.4.0 (2018-01-19)
+------------------
+* fixed infinite loop in non-standard cloudflare cfemail data decoding loop
+
 0.3.0 (2017-10-15)
 ------------------
 * improved cfemail
