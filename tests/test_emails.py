@@ -10,6 +10,16 @@ def split_text(text):
     return [x for x in text.split('\n') if x.strip()]
 
 
+def test_broken_cfemail():
+    CFEMAIL = """
+<span class="__cf_email__" data-cfemail="Sales@MAQSoftware.com">Sales at MAQSoftware dot com</span>
+"""
+    for sample in split_text(CFEMAIL):
+        tree = parse_html(sample)
+        res = list(audit_etree(tree))
+        assert len(res) == 1
+
+
 def test_cfemail():
     MAILTO = """
 <a href="/cdn-cgi/l/email-protection#e48d8a828ba496819091968ac98b8ac98d8a978d838c90ca878b89"><span class="__cf_email__" data-cfemail="cfa6a1a9a08fbdaabbbabda1e2a0a1e2a6a1bca6a8a7bbe1aca0a2">[email&#160;protected]</span></a>
@@ -33,6 +43,7 @@ def test_etree_mailto():
 <a href="&#109&#97&#105&#108&#116&#111&#58&#117&#115&#101&#114&#64&#100&#111&#109&#97&#105&#110&#46&#116&#108&#100">
 <a href='m&#97;ilto&#58;%4Aoh&#110;&#46;Doe&#64;e%78a&#109;&#112;le%2E%63&#111;m'>
 <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#111;&#104;&#110;&#64;&#121;&#97;&#104;&#111;&#111;&#46;&#99;&#111;&#109;'>
+<meta itemprop="email" content="sally.bye@brandpie.com" />
     """
     for sample in split_text(MAILTO):
         tree = parse_html(sample)
@@ -74,14 +85,36 @@ J&#111;hn&#46;Do&#101;&#64;&#101;xa&#109;ple&#46;co&#109;
         assert len(res) == 0, (invalid, res)
 
 
+'''
+# TODO:
+* <address>
+* "Email:"
+* [@itemprop]
+'''
+
+'''
+ info(at)embeemobile.com
+<script type="text/javascript">(function(){var ml="o-0.3km ei/r@><f:\"nlhztas=xc",mi=">G7KCGHHIA6G9CF01C9B5A7D;8?IA6G9CF0@9B?0<42J423K03EGA7=9B?0<42J423K03EG>:G=",o="";for(var j=0,l=mi.length;j<l;j++){o+=ml.charAt(mi.charCodeAt(j)-48);}document.write(o);}());</script><noscript>*protected email*</noscript>
+<p><span id="cloak73420">This email address is being protected from spambots. You need JavaScript enabled to view it.</span><script type='text/javascript'> //<!-- document.getElementById('cloak73420').innerHTML = ''; var prefix = '&#109;a' + 'i&#108;' + '&#116;o'; var path = 'hr' + 'ef' + '='; var addy73420 = '&#101;nq&#117;&#105;r&#105;&#101;s' + '&#64;'; addy73420 = addy73420 + '&#97;cc&#101;l&#101;r&#97;t&#101;-&#97;ss&#111;c&#105;&#97;t&#101;s' + '&#46;' + 'c&#111;' + '&#46;' + '&#117;k'; document.getElementById('cloak73420').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy73420 + '\'>' +addy73420+'<\/a>'; //--> </script></p>
+<script type="text/javascript">(function(){var ml="a%tkEh3i0nfc.m4slAoDF2erC-",mi="16H01E85GF:16C1EE=07@2B16A79:B1>80=?IB9@79F<;B=1EE1E81E8;@0??16C1EE=07@2BI@7931EE16479:B1>80=?IB9@79F<;B=16H1ED0164",o="";for(var j=0,l=mi.length;j<l;j++){o+=ml.charAt(mi.charCodeAt(j)-48);}document.getElementById("eeb-359396").innerHTML = decodeURIComponent(o);}());</script><noscript>*protected email*</noscript>
+<span id="cloak936e0ad78cfc76aa2da74ce7d8a4b2ec">This email address is being protected from spambots. You need JavaScript enabled to view it.</span><script type='text/javascript'> document.getElementById('cloak936e0ad78cfc76aa2da74ce7d8a4b2ec').innerHTML = ''; var prefix = '&#109;a' + 'i&#108;' + '&#116;o'; var path = 'hr' + 'ef' + '='; var addy936e0ad78cfc76aa2da74ce7d8a4b2ec = 'g&#105;ll' + '&#64;'; addy936e0ad78cfc76aa2da74ce7d8a4b2ec = addy936e0ad78cfc76aa2da74ce7d8a4b2ec + 'b&#105;gt&#101;ntr&#101;s&#101;&#97;rch' + '&#46;' + 'c&#111;' + '&#46;' + '&#117;k'; var addy_text936e0ad78cfc76aa2da74ce7d8a4b2ec = 'g&#105;ll' + '&#64;' + 'b&#105;gt&#101;ntr&#101;s&#101;&#97;rch' + '&#46;' + 'c&#111;' + '&#46;' + '&#117;k';document.getElementById('cloak936e0ad78cfc76aa2da74ce7d8a4b2ec').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy936e0ad78cfc76aa2da74ce7d8a4b2ec + '\'>'+addy_text936e0ad78cfc76aa2da74ce7d8a4b2ec+'<\/a>'; </script>
+<script type="text/javascript"><!-- emailE=('deechalmers@' + 'bobsyouruncleresearch.com'); document.write('<h2 class="email"><a href="mailto:' + emailE + '">' + emailE + '<\/a><\/h2>'); --></script><noscript> <p>This email address is protected by JavaScript.  Enable JavaScript to view.</p> </noscript>
+<p><strong>Email:</strong> <script type="text/javascript" language="javascript">var logn = "details"; var domen = "cambridgefocus"; var ennd = "com"; var mail01 = logn + "@" + domen + "." + ennd; document.write('<a href=\" mailto:' +mail01+ '\">' +mail01+ '<\/a>') </script>
+<script type='text/javascript'> <!-- var prefix = '&#109;a' + 'i&#108;' + '&#116;o'; var path = 'hr' + 'ef' + '='; var addy54660 = '&#105;nf&#111;' + '&#64;'; addy54660 = addy54660 + 'c&#97;mbr&#105;dg&#101;r&#97;' + '&#46;' + 'c&#111;m?s&#117;bj&#101;ct=c&#97;mbr&#105;dg&#101;r&#97; c&#111;nt&#97;ct fr&#111;m CRA'; var addy_text54660 = '&#105;nf&#111;' + '&#64;' + 'c&#97;mbr&#105;dg&#101;r&#97;' + '&#46;' + 'c&#111;m'; document.write('<a ' + path + '\'' + prefix + ':' + addy54660 + '\'>'); document.write(addy_text54660); document.write('<\/a>'); //-->\n </script><script type='text/javascript'> <!-- document.write('<span style=\'display: none;\'>'); //--> </script>This email address is being protected from spambots. You need JavaScript enabled to view it.  <script type='text/javascript'> <!-- document.write('</'); document.write('span>'); //--> </script>
+<span id="cloak99596">This email address is being protected from spambots. You need JavaScript enabled to view it.</span><script type='text/javascript'> //<!-- document.getElementById('cloak99596').innerHTML = ''; var prefix = '&#109;a' + 'i&#108;' + '&#116;o'; var path = 'hr' + 'ef' + '='; var addy99596 = '&#105;nf&#111;' + '&#64;'; addy99596 = addy99596 + 'c&#97;v&#101;llgr&#111;&#117;p' + '&#46;' + 'c&#111;m'; var addy_text99596 = '&#105;nf&#111;' + '&#64;' + 'c&#97;v&#101;llgr&#111;&#117;p' + '&#46;' + 'c&#111;m'; document.getElementById('cloak99596').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy99596 + '\'>'+addy_text99596+'<\/a>'; //--> </script>
+'''
+
+
 def test_at_dot():
     VALID = """
 user [at] domain [dot] tld
-foo AT bar DOT baz
+user at domain dot com
+foo AT bar DOT co.uk
 jt.superuser[AT]gmail[DOT]com
-contact(at)company(dot)com
+contact(at)company(dot)co.uk
+john @ hello-world . com
     """
-# info(at)embeemobile.com
+# John(@)clearpath-strategies.com
 
     INVALID = """
 he arrived at the dot exactly.
